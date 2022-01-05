@@ -15,6 +15,7 @@ import (
 )
 
 type Server struct{
+	proto.UnimplementedHashtableServer
 	Name int32 
 	Port int32 
 	Peerport int32
@@ -41,8 +42,10 @@ func main () {
 
 	s := Server{Name: int32(name), Port: int32(listenAddr), Peerport: int32(peerPort)}
 
-	s.Start()
+	
 
+	s.Start()
+	fmt.Printf("kommer jeg ger")
 	for {
 		s.Dial()
 		time.Sleep(5 * time.Second)
@@ -57,17 +60,17 @@ func main () {
 func (ser *Server) Start(){
 	lis, err := net.Listen("tcp", toAddr(ser.Peerport))
 	if err != nil {
-		fmt.Printf("kommer keg ehr")
 		log.Fatalf("failed to listen: %v", err)
 
 	}
 	s := grpc.NewServer()
-	proto.RegisterHashtableServer(s, ser)
-	fmt.Printf("kommer her ey")
+	proto.RegisterHashtableServer(s, ser.UnimplementedHashtableServer)
 
 	if err := s.Serve(lis); err != nil {
+	
 		log.Fatalf("failed to serve: %v", err)
 	}
+	
 
 
 
@@ -155,7 +158,7 @@ func (ser *Server) Dial() {
 	
 	if err != nil {
 		log.Printf("could not get Access: %v", err)
-		fmt.Print("hjjee")
+	
 		if ser.Peerport == 8300 {
 			ser.Peerport = 8500
 			return
@@ -165,7 +168,7 @@ func (ser *Server) Dial() {
 		}
 	}
 
-	fmt.Printf("hej")
+	
 	defer connection.Close()
 
 

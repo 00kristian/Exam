@@ -39,8 +39,6 @@ func main() {
 		case "\\put":
 			key, _ := strconv.ParseInt(commands[1], 10, 64)
 			value, _ := strconv.ParseInt(commands[2], 10, 64)
-
-		
 			put(key, value)
 		case "\\help":
 			help()
@@ -92,7 +90,7 @@ func put(key int64, value int64){
 		} else {
 			port = port - 100
 		}
-		put(offer.Key, offer.Value)
+	
 
 	}
 
